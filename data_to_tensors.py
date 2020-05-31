@@ -1,8 +1,11 @@
 import torch
-from tqdm.notebook import tqdm
 import numpy as np
+from tqdm.notebook import tqdm
+
 
 MAX_NUM_PATHS  = 200
+
+
 class DatasetBuilder:
     '''
     The purpose of this class is to process a dataset's 
@@ -52,6 +55,7 @@ class DatasetBuilder:
         output: tensor_starts, tensor_contexts, tensor_ends, tensor_labels
         '''
         with open(self.dataset_path, 'r') as file:
+            import numpy as np
 
             list_starts = []
             list_contexts = []
