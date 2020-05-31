@@ -1,6 +1,6 @@
 import torch
 from tqdm.notebook import tqdm
-
+import numpy as np
 
 MAX_NUM_PATHS  = 200
 class DatasetBuilder:
