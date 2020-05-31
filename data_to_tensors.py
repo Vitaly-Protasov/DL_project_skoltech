@@ -34,9 +34,9 @@ class DatasetBuilder:
                                 self.path_vocab.get(temp_path[1]), 
                                 self.value_vocab.get(temp_path[2])]:
 
-                  final_start.append(self.value_vocab[temp_path[0]])
-                  final_path.append(self.path_vocab[temp_path[1]])
-                  final_ends.append(self.value_vocab[temp_path[2]])
+                    final_start.append(self.value_vocab[temp_path[0]])
+                    final_path.append(self.path_vocab[temp_path[1]])
+                    final_ends.append(self.value_vocab[temp_path[2]])
                   
         # in order to fulfil to the max number of paths
         final_start += [self.value_vocab['<pad>']] * (MAX_NUM_PATHS - len(final_start))
