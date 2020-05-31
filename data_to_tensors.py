@@ -18,9 +18,9 @@ class DatasetBuilder:
         self.batch_size = batch_size
 
     def _data_processing_one_line(self, line):
-    '''
-    Processing for the each line of the dataset
-    '''
+        '''
+        Processing for the each line of the dataset
+        '''
         final_start = []
         final_path = []
         final_ends = []
@@ -46,11 +46,11 @@ class DatasetBuilder:
         return final_start, final_path, final_ends, final_labels
 
     def _form_tensors(self):
-    '''
-    This method forms tensors which will be delivered to the model.
-    Also, it should be considered as the iterator for the dataset.
-    output: tensor_starts, tensor_contexts, tensor_ends, tensor_labels
-    '''
+        '''
+        This method forms tensors which will be delivered to the model.
+        Also, it should be considered as the iterator for the dataset.
+        output: tensor_starts, tensor_contexts, tensor_ends, tensor_labels
+        '''
         with open(self.dataset_path, 'r') as file:
 
             list_starts = []
