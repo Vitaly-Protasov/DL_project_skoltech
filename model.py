@@ -1,3 +1,8 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+
 class code2vec_model(nn.Module):
   """
   self.values_vocab_size - set of values of AST terminals that were observed during training
