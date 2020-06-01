@@ -13,7 +13,6 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train'):
     model.to(DEVICE)
     epoch_loss = 0.0
     accuracy = 0
-    dataloader
     
     try:
         dataloader._form_tensors()
@@ -38,7 +37,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train'):
             loss.backward()
             optimizer.step()
         epoch_loss += loss.item()
-        
+        break
     
     return epoch_loss / len(dataloader), accuracy / len(dataloader) * 100
     
