@@ -4,7 +4,7 @@ from torch.nn import functional as F
 from torch.utils.data import Dataset
 
 
-def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train'):
+def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train', if_earlystop = False):
     DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     if mode=='train':
         model.train()
@@ -37,7 +37,9 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train'):
             loss.backward()
             optimizer.step()
         epoch_loss += loss.item()
-        break
+        
+        if if_earlystop:
+            break
     
     return epoch_loss / len(dataloader), accuracy / len(dataloader) * 100
     
@@ -57,7 +59,7 @@ def train(model, optimizer, criterion, train_loader, n_epochs,
         val_loss_list.append(val_loss)
         train_acc_list.append(train_accuracy)
         val_acc_list.append(val_accuracy)
-        
+       
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             

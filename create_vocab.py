@@ -11,7 +11,6 @@ def create_vocab(path):
         word2idx = {'<unk>': 0, '<pad>': 1}
         path2idx = {'<unk>': 0, '<pad>': 1 }
         target2idx = {'<unk>': 0, '<pad>': 1}
-
         idx2target = {}
 
         for w in word2count.keys():
