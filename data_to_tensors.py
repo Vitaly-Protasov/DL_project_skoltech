@@ -19,6 +19,10 @@ class DatasetBuilder:
         self.path_vocab = path_vocab
         self.target_vocab = target_vocab
         self.batch_size = batch_size
+        self.len_dataset = 0
+    
+    def __len__(self):
+        return self.len_dataset + 1
 
     def _data_processing_one_line(self, line):
         '''
@@ -64,6 +68,7 @@ class DatasetBuilder:
             temp_tensor_labels = np.zeros(len(self.target_vocab))
             
             for i, line in enumerate(tqdm(file)):
+                self.len_dataset = i
                 test_ = self._data_processing_one_line(line)
                 list_starts += [test_[0]]
                 list_contexts += [test_[1]]
