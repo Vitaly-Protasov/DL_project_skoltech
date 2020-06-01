@@ -44,7 +44,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train', if_e
     return epoch_loss / len(dataloader), accuracy / len(dataloader) * 100
     
 def train(model, optimizer, criterion, train_loader, n_epochs,
-          scheduler=None, checkpoint=True, freq=None, verbose=True):
+          scheduler=None, checkpoint=True, freq=None, verbose=True, if_earlystop = False):
     if verbose and freq is None:
         freq = max(1, n_epochs // 10)
     
@@ -52,7 +52,7 @@ def train(model, optimizer, criterion, train_loader, n_epochs,
     train_loss_list, val_loss_list = [], []
     train_acc_list, val_acc_list = [], []
     for epoch in range(n_epochs):
-        train_loss, train_accuracy = run_epoch(model, optimizer, criterion, train_loader, epoch, 'train')
+        train_loss, train_accuracy = run_epoch(model, optimizer, criterion, train_loader, epoch, 'train', if_earlystop = if_earlystop)
         val_loss, val_accuracy = run_epoch(model, None, criterion, val_loader, epoch, 'val')
 
         train_loss_list.append(train_loss)
