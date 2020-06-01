@@ -4,12 +4,13 @@ from torch.nn import functional as F
 from torch.utils.data import Dataset
 
 
-def run_epoch(model, optimizer, criterion, dataloader, epoch, device, mode='train'):
+def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train'):
+    DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     if mode=='train':
         model.train()
     else:
         model.eval()
-    model.to(device)
+    model.to(DEVICE)
     epoch_loss = 0.0
     accuracy = 0
     dataloader
@@ -20,8 +21,8 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, device, mode='trai
         raise RuntimeError('You use a weird type of dataset. It shoulb be DatasetBuilder.')
 
     for i, (starts, contexts, ends, labels) in enumerate(dataloader):
-        starts, contexts, ends = starts.to(device), contexts.to(device), ends.to(device)
-        labels = labels.to(device)
+        starts, contexts, ends = starts.to(DEVICE), contexts.to(DEVICE), ends.to(DEVICE)
+        labels = labels.to(DEVICE)
 
         iteration_n = epoch * i + i
         
