@@ -4,7 +4,7 @@ from torch.nn import functional as F
 from torch.utils.data import Dataset
 
 
-def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train', device=DEVICE):
+def run_epoch(model, optimizer, criterion, dataloader, epoch, device, mode='train'):
     if mode=='train':
         model.train()
     else:
