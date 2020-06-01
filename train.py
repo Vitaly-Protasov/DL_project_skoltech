@@ -43,12 +43,11 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train'):
     return epoch_loss / len(dataloader), accuracy / len(dataloader) * 100
     
 def train(model, optimizer, criterion, train_loader, n_epochs,
-          scheduler=None, checkpoint=True, early_stopping=False, es_patience=10, freq=None, verbose=True):
+          scheduler=None, checkpoint=True, freq=None, verbose=True):
     if verbose and freq is None:
         freq = max(1, n_epochs // 10)
     
     best_val_loss = float('+inf')
-    bad_epochs = 0
     train_loss_list, val_loss_list = [], []
     train_acc_list, val_acc_list = [], []
     for epoch in range(n_epochs):
@@ -72,10 +71,4 @@ def train(model, optimizer, criterion, train_loader, n_epochs,
             print("Epoch {}: train loss - {} | validation loss - {}".format(epoch, train_loss, val_loss))
             print(f'Epoch {epoch}: f1_val={f1_val}, rec_val={rec_val}, prec_val={prec_val}')
         
-        if early_stopping:
-            bad_epochs += 1
-            if bad_epochs > es_patience:
-                print("Stopped at", epoch, "because patience threshold for epochs",\
-                      "without validation loss improvement was reached.")
-                break
     return train_loss_list, train_acc_list
