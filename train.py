@@ -16,11 +16,11 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train'):
     dataloader
     
     try:
-        dataloader = dataloader._form_tensors()
+        dataloader._form_tensors()
     except:
         raise RuntimeError('You use a weird type of dataset. It shoulb be DatasetBuilder.')
 
-    for i, (starts, contexts, ends, labels) in enumerate(dataloader):
+    for i, (starts, contexts, ends, labels) in enumerate(dataloader._form_tensors()):
         starts, contexts, ends = starts.to(DEVICE), contexts.to(DEVICE), ends.to(DEVICE)
         labels = labels.to(DEVICE)
 
@@ -38,6 +38,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train'):
             loss.backward()
             optimizer.step()
         epoch_loss += loss.item()
+        
     
     return epoch_loss / len(dataloader), accuracy / len(dataloader) * 100
     
