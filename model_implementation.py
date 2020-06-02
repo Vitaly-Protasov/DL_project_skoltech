@@ -9,7 +9,6 @@ class code2vec_model(nn.Module):
   self.paths_vocab_size - set of AST paths
   self.val_embedding_dim - size of embedding vector for values
   self.path_embedding_dim - size of embedding vector for values
-
   """
   def __init__(self, 
                val_embedding_dim = 10,
@@ -74,6 +73,6 @@ class code2vec_model(nn.Module):
 
     ## 5. Prediction
     output = self.output_linear(code_vector)
-    output = F.softmax(output, dim = 1)
+    # output = F.softmax(output, dim = 1)
 
     return code_vector, output
