@@ -88,8 +88,8 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
         if scheduler is not None:
             scheduler.step(val_loss)
 
-        print(f'Epoch {epoch+1}: train loss - {round(train_loss,5)}, validation loss - {round(val_loss,5)}')
-        print(f'\t precision - {round(val_precision,5)}, recall - {round(val_recall,5)}, f1_score - {round(val_f1,5)}')
+        print('Epoch {}: train loss - {}, validation loss - {}'.format(epoch+1, round(train_loss,5)), round(val_loss,5))
+        print('\t precision - {}, recall - {}, f1_score - {}'.format(round(val_precision,5), round(val_recall,5)), round(val_f1,5))
         print('----------------------------------------------------------------------')
         
     return list_train_loss , list_val_loss, list_train_precision, list_val_precision, list_train_recall, list_val_recall, list_train_f1, list_val_f1
