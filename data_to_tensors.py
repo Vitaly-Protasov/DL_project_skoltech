@@ -1,5 +1,7 @@
 import torch
 import numpy as np
+from tqdm.notebook import tqdm
+
 
 MAX_NUM_PATHS  = 200
 
@@ -59,7 +61,6 @@ class DatasetBuilder:
             list_contexts = []
             list_ends = []
             list_labels = []
-            temp_tensor_labels = np.zeros(len(self.target_vocab))
             
             for i, line in enumerate(file):
                 self.len_dataset = i
@@ -67,10 +68,7 @@ class DatasetBuilder:
                 list_starts += [test_[0]]
                 list_contexts += [test_[1]]
                 list_ends += [test_[2]]
-
-                temp_tensor_labels[test_[3]] = 1
-                list_labels += [temp_tensor_labels.copy()]
-                temp_tensor_labels[test_[3]] = 0
+                list_labels += [test_[3]]
                 
                 if (i+1) % self.batch_size == 0:
                     tensor_starts = torch.LongTensor(list_starts)
