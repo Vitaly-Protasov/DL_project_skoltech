@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
+from metrics import precision_recall_f1
 
-
-def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train', device = None):
+def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, mode='train', device = None):
   
     if mode == 'train':
         model.train()
@@ -25,7 +25,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train', devi
         
         code_vector, y_pred = model(starts, contexts, ends)
         loss = criterion(y_pred, torch.argmax(labels, dim = 1))
-        precision, recall, f1 = precision_recall_f1(y_pred, labels)
+        precision, recall, f1 = precision_recall_f1(y_pred, labels, idx2target_vocab)
         
         if optimizer is not None:
             optimizer.zero_grad()
@@ -41,7 +41,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, mode='train', devi
     
     return epoch_loss / len(dataloader), epoch_precision / len(dataloader), epoch_recall / len(dataloader), epoch_f1 / len(dataloader)
     
-def train(model, optimizer, criterion, train_loader, val_loader, epochs,
+def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2target_vocab,
           scheduler=None, checkpoint=True):
     
     list_train_loss = []
@@ -60,8 +60,8 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs,
 
     for epoch in range(epochs):
 
-        train_loss, train_precision, train_recall, train_f1 = run_epoch(model, optimizer, criterion, train_loader, epoch, mode = 'train', device = DEVICE)
-        val_loss, val_precision, val_recall, val_f1 = run_epoch(model, None, criterion, val_loader, epoch, mode = 'val', device = DEVICE)
+        train_loss, train_precision, train_recall, train_f1 = run_epoch(model, optimizer, criterion, train_loader, epoch,idx2target_vocab, mode = 'train', device = DEVICE)
+        val_loss, val_precision, val_recall, val_f1 = run_epoch(model, None, criterion, val_loader, epoch, idx2target_vocab, mode = 'val', device = DEVICE)
 
 
         list_train_loss.append(train_loss)
