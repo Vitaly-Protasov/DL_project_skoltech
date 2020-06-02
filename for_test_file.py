@@ -14,7 +14,7 @@ def main():
     torch.manual_seed(SEED)
     torch.cuda.manual_seed(SEED)
     torch.backends.cudnn.deterministic = True
-    DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    
 
 
     dict_path = '../data/java-small/java-small.dict.c2v'
@@ -39,12 +39,14 @@ def main():
                                  paths_vocab_size = len(path2idx), 
                                  labels_num = len(target2idx))
                                  
+    
+    
+    ########################################################################################
     N_EPOCHS = 10
     LR = 1e-4
     
-
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    criterion = nn.CrossEntropyLoss().to(DEVICE)
+    criterion = nn.CrossEntropyLoss()
 
     early_stop = False # ставите True и тогда будет обучение ток для одного батча
     list_train_loss, list_val_loss, list_train_precision, list_val_precision,list_train_recall, list_val_recall, list_train_f1, list_val_f1 = train(model = model, optimizer = optimizer,

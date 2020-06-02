@@ -1,7 +1,5 @@
 import torch
 import numpy as np
-from tqdm.notebook import tqdm
-
 
 MAX_NUM_PATHS  = 200
 
