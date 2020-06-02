@@ -17,9 +17,9 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
     try:
         dataloader._form_tensors()
     except:
-        raise RuntimeError('You use a weird type of dataset. It shoulb be DatasetBuilder.')
+        raise RuntimeError('You use a weird type of dataset. It should be DatasetBuilder.')
         
-    for i, (starts, contexts, ends, labels) in enumerate(dataloader._form_tensors()):
+    for  (starts, contexts, ends, labels) in dataloader._form_tensors():
       
         starts, contexts, ends = starts.to(device), contexts.to(device), ends.to(device)
         labels = labels.to(device)
@@ -41,7 +41,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
         if early_stop:
             break
     
-    return epoch_loss / len(dataloader), epoch_precision / len(dataloader), epoch_recall / len(dataloader), epoch_f1 / len(dataloader)
+    return epoch_loss / dataloader.batch_size, epoch_precision / dataloader.batch_size, epoch_recall / dataloader.batch_size, epoch_f1 / dataloader.batch_size
     
 def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2target_vocab,
           scheduler=None, checkpoint=True, early_stop = False):
