@@ -9,3 +9,10 @@ Skoltech project of the Deep Learning course
 ## Authors of this project (in alphabet order):
 
 **Alexander Selivanov, Kristina Ivanova, Lucy Airapetyan, Vitaly Protasov.**
+
+
+If you want to run it, you have two stepts:
+*  Open notebook, for example in collab by link below and run all cells.
+
+* Without notebook: **./download data.sh** and **python3 for_test_file.py**.
+*  (First one download data and the second one start learning process).
