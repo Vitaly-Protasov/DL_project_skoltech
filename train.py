@@ -20,8 +20,8 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, device, mode='trai
         raise RuntimeError('You use a weird type of dataset. It shoulb be DatasetBuilder.')
 
     for i, (starts, contexts, ends, labels) in enumerate(dataloader._form_tensors()):
-        starts, contexts, ends = starts.to(DEVICE), contexts.to(DEVICE), ends.to(DEVICE)
-        labels = labels.to(DEVICE)
+        starts, contexts, ends = starts.to(device), contexts.to(device), ends.to(device)
+        labels = labels.to(device)
         
         code_vector, y_pred = model(starts, contexts, ends)
         loss = criterion(y_pred, torch.argmax(labels, dim = 1))
@@ -47,9 +47,9 @@ def train(model, optimizer, criterion, train_loader, val_loader, n_epochs,
     DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     
     for epoch in range(n_epochs):
-        train_loss = run_epoch(model, optimizer, criterion, train_loader, epoch, device = DEVICE, mode = 'train')
+        train_loss = run_epoch(model, optimizer, criterion.to(DEVICE), train_loader, epoch, device = DEVICE, mode = 'train')
         try:
-          val_loss = run_epoch(model, None, criterion, val_loader, epoch, device = DEVICE, mode = 'val')
+          val_loss = run_epoch(model, None, criterion.to(DEVICE), val_loader, epoch, device = DEVICE, mode = 'val')
         except:
           val_loss = -1 
         train_loss_list.append(train_loss)
