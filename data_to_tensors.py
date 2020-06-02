@@ -31,25 +31,21 @@ class DatasetBuilder:
         final_start = []
         final_path = []
         final_ends = []
-        final_label = None
+        final_labels = None
         name, *tree = line.split(' ')
         for each_path in tree:
             if each_path != '' and each_path != '\n':
                 temp_path = each_path.split(',')
-                # in order not to add such path, which consist of words not in our dictionary(from dataset)
-                if None not in [self.value_vocab.get(temp_path[0]), 
-                                self.path_vocab.get(temp_path[1]), 
-                                self.value_vocab.get(temp_path[2])]:
 
-                    final_start.append(self.value_vocab[temp_path[0]])
-                    final_path.append(self.path_vocab[temp_path[1]])
-                    final_ends.append(self.value_vocab[temp_path[2]])
+                final_start.append(self.value_vocab.get(temp_path[0], value_vocab['<unk>'])
+                final_path.append(self.path_vocab.get(temp_path[1], path_vocab['<unk>'])
+                final_ends.append(self.value_vocab.get(temp_path[2], value_vocab['<unk>'])
                   
         # in order to fulfil to the max number of paths
         final_start += [self.value_vocab['<pad>']] * (MAX_NUM_PATHS - len(final_start))
         final_path += [self.path_vocab['<pad>']] * (MAX_NUM_PATHS - len(final_path))
         final_ends += [self.value_vocab['<pad>']] * (MAX_NUM_PATHS - len(final_ends))
-        final_labels = self.target_vocab[name]
+        final_labels = self.target_vocab.get(name, target_vocab['<unk>'])
         return final_start, final_path, final_ends, final_labels
 
     def _form_tensors(self):
