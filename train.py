@@ -49,9 +49,9 @@ def train(model, optimizer, criterion, train_loader, val_loader, n_epochs,
     model = model.to(DEVICE)
     criterion = criterion.to(DEVICE)
     for epoch in range(n_epochs):
-        train_loss = run_epoch(model, optimizer, criterion, train_loader, epoch, device = DEVICE, mode = 'train')
+        train_loss = run_epoch(model, optimizer, criterion, train_loader, epoch, device = DEVICE, mode = 'train',is_earlystop = True)
         try:
-          val_loss = run_epoch(model, None, criterion, val_loader, epoch, device = DEVICE, mode = 'val')
+          val_loss = run_epoch(model, None, criterion, val_loader, epoch, device = DEVICE, mode = 'val',is_earlystop = True)
         except:
           val_loss = -1 
         train_loss_list.append(train_loss)
