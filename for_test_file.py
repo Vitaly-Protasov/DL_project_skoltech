@@ -42,7 +42,7 @@ def main():
     LR = 1e-4
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    criterion = nn.CrossEntropyLoss().to(DEVICE)
+    criterion = nn.CrossEntropyLoss()
 
     early_stop = False # ставите True и тогда будет обучение ток для одного батча
     list_train_loss, list_val_loss, list_train_precision, list_val_precision,list_train_recall, list_val_recall, list_train_f1, list_val_f1 = train(model = model, optimizer = optimizer,
