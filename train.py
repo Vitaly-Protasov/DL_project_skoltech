@@ -45,7 +45,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
             break
     
     num_batches = float(num_batches)
-    
+    epoch_tp, epoch_fp, epoch_fn = float(epoch_tp), float(epoch_fp), float(epoch_fn)
     epsilon = 1e-7
     precision = epoch_tp / (epoch_tp + epoch_fp + epsilon)
     recall = epoch_tp / (epoch_tp + epoch_fn + epsilon)
