@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import linecache
+from torch.utils.data import Dataset
 
 MAX_NUM_PATHS  = 200
 
