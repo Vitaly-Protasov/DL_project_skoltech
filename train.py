@@ -46,10 +46,12 @@ def train(model, optimizer, criterion, train_loader, val_loader, n_epochs,
     train_acc_list, val_acc_list = [], []
     DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     
+    model = model.to(DEVICE)
+    criterion = criterion.to(DEVICE)
     for epoch in range(n_epochs):
-        train_loss = run_epoch(model, optimizer, criterion.to(DEVICE), train_loader, epoch, device = DEVICE, mode = 'train')
+        train_loss = run_epoch(model, optimizer, criterion, train_loader, epoch, device = DEVICE, mode = 'train')
         try:
-          val_loss = run_epoch(model, None, criterion.to(DEVICE), val_loader, epoch, device = DEVICE, mode = 'val')
+          val_loss = run_epoch(model, None, criterion, val_loader, epoch, device = DEVICE, mode = 'val')
         except:
           val_loss = -1 
         train_loss_list.append(train_loss)
