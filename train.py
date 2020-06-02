@@ -17,9 +17,9 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
     try:
         dataloader._form_tensors()
     except:
-        raise RuntimeError('You use a weird type of dataset. It shoulb be DatasetBuilder.')
+        raise RuntimeError('You use a weird type of dataset. It should be DatasetBuilder.')
         
-    for i, (starts, contexts, ends, labels) in enumerate(dataloader._form_tensors()):
+    for  (starts, contexts, ends, labels) in dataloader._form_tensors():
       
         starts, contexts, ends = starts.to(device), contexts.to(device), ends.to(device)
         labels = labels.to(device)
@@ -41,7 +41,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
         if early_stop:
             break
     
-    return epoch_loss / len(dataloader), epoch_precision / len(dataloader), epoch_recall / len(dataloader), epoch_f1 / len(dataloader)
+    return epoch_loss / dataloader.batch_size, epoch_precision / dataloader.batch_size, epoch_recall / dataloader.batch_size, epoch_f1 / dataloader.batch_size
     
 def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2target_vocab,
           scheduler=None, checkpoint=True, early_stop = False):
@@ -91,9 +91,9 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
         if scheduler is not None:
             scheduler.step(val_loss)
 
-        print (str(epoch+1) + 'th epoch processed in %.3f' % (time() - start_time))
-        print('Epoch {}: train loss - {}, validation loss - {}'.format(epoch+1, round(train_loss,5)), round(val_loss,5))
-        print('\t precision - {}, recall - {}, f1_score - {}'.format(round(val_precision,5), round(val_recall,5)), round(val_f1,5))
+        #print (str(epoch+1) + 'th epoch processed in %.3f' % (time() - start_time))
+        print('Epoch {}: train loss - {}, validation loss - {}'.format(epoch+1, round(train_loss,5), round(val_loss,5)))
+        print('\t precision - {}, recall - {}, f1_score - {}'.format(round(val_precision,5), round(val_recall,5), round(val_f1,5)))
         print('----------------------------------------------------------------------')
         
     return list_train_loss , list_val_loss, list_train_precision, list_val_precision, list_train_recall, list_val_recall, list_train_f1, list_val_f1
