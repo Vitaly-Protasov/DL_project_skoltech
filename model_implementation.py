@@ -11,10 +11,10 @@ class code2vec_model(nn.Module):
   self.path_embedding_dim - size of embedding vector for values
   """
   def __init__(self, 
-               val_embedding_dim = 10,
-               path_embedding_dim = 10,
+               val_embedding_dim = 128,
+               path_embedding_dim = 128,
                dropout_rate = 0.25,
-               embedding_dim = 10,
+               embedding_dim = 128,
                values_vocab_size = 0,
                paths_vocab_size = 0,
                labels_num = 0):
