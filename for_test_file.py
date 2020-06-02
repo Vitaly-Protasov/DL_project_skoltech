@@ -39,16 +39,17 @@ def main():
                                  labels_num = len(target2idx))
                                  
     N_EPOCHS = 10
-LR = 1e-4
+    LR = 1e-4
 
-optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-criterion = nn.CrossEntropyLoss().to(DEVICE)
+    optimizer = torch.optim.Adam(model.parameters(), lr=LR)
+    criterion = nn.CrossEntropyLoss().to(DEVICE)
 
-early_stop = False # ставите True и тогда будет обучение ток для одного батча
-list_train_loss, list_val_loss, list_train_precision, list_val_precision,list_train_recall, list_val_recall, list_train_f1, list_val_f1 = train(model = model, optimizer = optimizer,
-                                                                                                                                                criterion = criterion, train_loader = train_iterator,
-                                                                                                                                                val_loader = val_iterator,
-                                                                                                                                                epochs = N_EPOCHS, idx2target_vocab = idx2target, 
-                                                                                                                                                scheduler=None, checkpoint=True, early_stop = early_stop)
+    early_stop = False # ставите True и тогда будет обучение ток для одного батча
+    list_train_loss, list_val_loss, list_train_precision, list_val_precision,list_train_recall, list_val_recall, list_train_f1, list_val_f1 = train(model = model, optimizer = optimizer,
+                                                                                                                                                    criterion = criterion, train_loader = train_iterator,
+                                                                                                                                                    val_loader = val_iterator,
+                                                                                                                                                    epochs = N_EPOCHS, idx2target_vocab = idx2target, 
+                                                                                                                                                    scheduler=None, checkpoint=True, early_stop = early_stop)
+
 if __name__== "__main__":
   main()
