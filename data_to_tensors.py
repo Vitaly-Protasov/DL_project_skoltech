@@ -37,15 +37,15 @@ class DatasetBuilder:
             if each_path != '' and each_path != '\n':
                 temp_path = each_path.split(',')
 
-                final_start.append(self.value_vocab.get(temp_path[0], value_vocab['<unk>']))
-                final_path.append(self.path_vocab.get(temp_path[1], path_vocab['<unk>']))
-                final_ends.append(self.value_vocab.get(temp_path[2], value_vocab['<unk>']))
+                final_start.append(self.value_vocab.get(temp_path[0], self.value_vocab['<unk>']))
+                final_path.append(self.path_vocab.get(temp_path[1], self.path_vocab['<unk>']))
+                final_ends.append(self.value_vocab.get(temp_path[2], self.value_vocab['<unk>']))
                   
         # in order to fulfil to the max number of paths
         final_start += [self.value_vocab['<pad>']] * (MAX_NUM_PATHS - len(final_start))
         final_path += [self.path_vocab['<pad>']] * (MAX_NUM_PATHS - len(final_path))
         final_ends += [self.value_vocab['<pad>']] * (MAX_NUM_PATHS - len(final_ends))
-        final_labels = self.target_vocab.get(name, target_vocab['<unk>'])
+        final_labels = self.target_vocab.get(name, self.target_vocab['<unk>'])
         return final_start, final_path, final_ends, final_labels
 
     def _form_tensors(self):
