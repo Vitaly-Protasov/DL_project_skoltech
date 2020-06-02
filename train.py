@@ -28,6 +28,9 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
         code_vector, y_pred = model(starts, contexts, ends)
         loss = criterion(y_pred, labels)
         tp, fp, fn = precision_recall_f1(y_pred, labels, idx2target_vocab)
+        epoch_tp += tp
+        epoch_fp += fp
+        epoch_fn += fn
         
         if optimizer is not None:
             optimizer.zero_grad()
@@ -44,8 +47,8 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
     num_batches = float(num_batches)
     
     epsilon = 1e-7
-    precision = tp / (tp + fp + epsilon)
-    recall = tp / (tp + fn + epsilon)
+    precision = epoch_tp / (epoch_tp + epoch_fp + epsilon)
+    recall = epoch_tp / (epoch_tp + epoch_fn + epsilon)
     f1 = 2 * precision * recall / (precision + recall + epsilon)
 
     return epoch_loss/num_batches, precision, recall, f1
