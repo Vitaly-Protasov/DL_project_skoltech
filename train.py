@@ -57,6 +57,7 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
     best_val_loss = float('+inf')
 
     DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    
     model.to(DEVICE)
     criterion = criterion.to(DEVICE)
 
