@@ -6,7 +6,7 @@ from torch.nn import functional as F
 def precision_recall_f1(pred, labels, idx2target_vocab):
     
     pred_idxs = torch.argmax(pred, dim = 1)
-    label_idxs = torch.argmax(labels, dim = 1)
+    label_idxs = labels
     pred_names = [idx2target_vocab[i.item()] for i in pred_idxs]
     original_names = [idx2target_vocab[i.item()] for i in label_idxs]
 
