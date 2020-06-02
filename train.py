@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 from metrics import precision_recall_f1
+from time import time
 
 def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, mode='train', device = None, early_stop = False):
   
@@ -16,15 +17,15 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
     try:
         dataloader._form_tensors()
     except:
-        raise RuntimeError('You use a weird type of dataset. It shoulb be DatasetBuilder.')
-
-    for i, (starts, contexts, ends, labels) in enumerate(dataloader._form_tensors()):
-
+        raise RuntimeError('You use a weird type of dataset. It should be DatasetBuilder.')
+        
+    for  (starts, contexts, ends, labels) in dataloader._form_tensors():
+      
         starts, contexts, ends = starts.to(device), contexts.to(device), ends.to(device)
         labels = labels.to(device)
         
         code_vector, y_pred = model(starts, contexts, ends)
-        loss = criterion(y_pred, torch.argmax(labels, dim = 1))
+        loss = criterion(y_pred, labels)
         precision, recall, f1 = precision_recall_f1(y_pred, labels, idx2target_vocab)
         
         if optimizer is not None:
@@ -40,7 +41,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
         if early_stop:
             break
     
-    return epoch_loss / len(dataloader), epoch_precision / len(dataloader), epoch_recall / len(dataloader), epoch_f1 / len(dataloader)
+    return epoch_loss / dataloader.batch_size, epoch_precision / dataloader.batch_size, epoch_recall / dataloader.batch_size, epoch_f1 / dataloader.batch_size
     
 def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2target_vocab,
           scheduler=None, checkpoint=True, early_stop = False):
@@ -59,8 +60,10 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
     DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(DEVICE)
     criterion = criterion.to(DEVICE)
-
+    
     for epoch in range(epochs):
+      
+        start_time = time()
 
         train_loss, train_precision, train_recall, train_f1 = run_epoch(model, optimizer, criterion, train_loader, epoch,idx2target_vocab, mode = 'train', device = DEVICE, early_stop = early_stop)
         val_loss, val_precision, val_recall, val_f1 = run_epoch(model, None, criterion, val_loader, epoch, idx2target_vocab, mode = 'val', device = DEVICE, early_stop = early_stop)
@@ -88,8 +91,9 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
         if scheduler is not None:
             scheduler.step(val_loss)
 
-        print('Epoch {}: train loss - {}, validation loss - {}'.format(epoch+1, round(train_loss,5)), round(val_loss,5))
-        print('\t precision - {}, recall - {}, f1_score - {}'.format(round(val_precision,5), round(val_recall,5)), round(val_f1,5))
+        print (str(epoch+1) + 'th epoch processed in %.3f' % (time() - start_time))
+        print('Epoch {}: train loss - {}, validation loss - {}'.format(epoch+1, round(train_loss,5), round(val_loss,5)))
+        print('\t precision - {}, recall - {}, f1_score - {}'.format(round(val_precision,5), round(val_recall,5), round(val_f1,5)))
         print('----------------------------------------------------------------------')
         
     return list_train_loss , list_val_loss, list_train_precision, list_val_precision, list_train_recall, list_val_recall, list_train_f1, list_val_f1
