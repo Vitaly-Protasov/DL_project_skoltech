@@ -28,8 +28,8 @@ def precision_recall_f1(pred, labels, idx2target_vocab):
 
     epsilon = 1e-7
 
-    precision = tp / (tp + fp + epsilon)
+    '''precision = tp / (tp + fp + epsilon)
     recall = tp / (tp + fn + epsilon)
-    f1 = 2 * precision * recall / (precision + recall + epsilon)
+    f1 = 2 * precision * recall / (precision + recall + epsilon)'''
 
-    return precision, recall, f1
+    return tp, fp, fn
