@@ -67,7 +67,7 @@ class DatasetBuilder:
             list_labels = []
             temp_tensor_labels = np.zeros(len(self.target_vocab))
             
-            for i, line in enumerate(tqdm(file)):
+            for i, line in enumerate(file):
                 self.len_dataset = i
                 test_ = self._data_processing_one_line(line)
                 list_starts += [test_[0]]
