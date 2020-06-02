@@ -12,7 +12,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
         model.eval()
 
     epoch_loss = 0.0
-    epoch_precision, epoch_recall, epoch_f1 = 0.0, 0.0, 0.0
+    epoch_tp, epoch_fp, epoch_fn = 0.0, 0.0, 0.0
     
     try:
         dataloader._form_tensors()
