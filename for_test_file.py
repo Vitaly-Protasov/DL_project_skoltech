@@ -6,7 +6,7 @@ from train import run_epoch, train
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+import random
 
 def main():
     SEED = 1234
