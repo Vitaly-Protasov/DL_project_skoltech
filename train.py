@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.nn import functional as F
 from metrics import precision_recall_f1
 
-def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, mode='train', device = None):
+def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, mode='train', device = None, early_stop = False):
   
     if mode == 'train':
         model.train()
@@ -36,13 +36,14 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
         epoch_precision += precision
         epoch_recall += recall
         epoch_f1 += f1
-
-        break
+        
+        if early_stop:
+            break
     
     return epoch_loss / len(dataloader), epoch_precision / len(dataloader), epoch_recall / len(dataloader), epoch_f1 / len(dataloader)
     
 def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2target_vocab,
-          scheduler=None, checkpoint=True):
+          scheduler=None, checkpoint=True, early_stop = False):
     
     list_train_loss = []
     list_val_loss = []
@@ -60,8 +61,8 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
 
     for epoch in range(epochs):
 
-        train_loss, train_precision, train_recall, train_f1 = run_epoch(model, optimizer, criterion, train_loader, epoch,idx2target_vocab, mode = 'train', device = DEVICE)
-        val_loss, val_precision, val_recall, val_f1 = run_epoch(model, None, criterion, val_loader, epoch, idx2target_vocab, mode = 'val', device = DEVICE)
+        train_loss, train_precision, train_recall, train_f1 = run_epoch(model, optimizer, criterion, train_loader, epoch,idx2target_vocab, mode = 'train', device = DEVICE, early_stop = early_stop)
+        val_loss, val_precision, val_recall, val_f1 = run_epoch(model, None, criterion, val_loader, epoch, idx2target_vocab, mode = 'val', device = DEVICE, early_stop = early_stop)
 
 
         list_train_loss.append(train_loss)
