@@ -7,7 +7,7 @@ MAX_NUM_PATHS  = 200
 
 class TextDataset(Dataset):
     
-    def __init__(self, dataset_path, value_vocab, path_vocab, target_vocab, batch_size = 100):
+    def __init__(self, dataset_path, value_vocab, path_vocab, target_vocab):
         self.dataset_path = dataset_path
         self.value_vocab = value_vocab
         self.path_vocab = path_vocab
