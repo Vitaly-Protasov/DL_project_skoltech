@@ -20,7 +20,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
         raise RuntimeError('You use a weird type of dataset. It should be DatasetBuilder.')
         
     num_batches = 0
-    for (starts, contexts, ends, labels) in dataloader._form_tensors():
+    for (starts, contexts, ends, labels) in dataloader:
       
         starts, contexts, ends = starts.to(device), contexts.to(device), ends.to(device)
         labels = labels.to(device)
