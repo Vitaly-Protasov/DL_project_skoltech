@@ -38,8 +38,8 @@ class DatasetBuilder:
                 temp_path = each_path.split(',')
 
                 final_start.append(self.value_vocab.get(temp_path[0], value_vocab['<unk>'])
-                final_path.append(self.path_vocab.get(temp_path[1], path_vocab['<unk>'])
-                final_ends.append(self.value_vocab.get(temp_path[2], value_vocab['<unk>'])
+                final_path.append(self.path_vocab.get(temp_path[1], path_vocab['<unk>']))
+                final_ends.append(self.value_vocab.get(temp_path[2], value_vocab['<unk>']))
                   
         # in order to fulfil to the max number of paths
         final_start += [self.value_vocab['<pad>']] * (MAX_NUM_PATHS - len(final_start))
