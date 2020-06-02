@@ -91,7 +91,7 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
         if scheduler is not None:
             scheduler.step(val_loss)
 
-        #print (str(epoch+1) + 'th epoch processed in %.3f' % (time() - start_time))
+        print (str(epoch+1) + 'th epoch processed in %.3f' % (time() - start_time))
         print('Epoch {}: train loss - {}, validation loss - {}'.format(epoch+1, round(train_loss,5), round(val_loss,5)))
         print('\t precision - {}, recall - {}, f1_score - {}'.format(round(val_precision,5), round(val_recall,5), round(val_f1,5)))
         print('----------------------------------------------------------------------')
