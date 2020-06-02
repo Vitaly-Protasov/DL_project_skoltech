@@ -12,21 +12,25 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
         model.eval()
 
     epoch_loss = 0.0
-    epoch_precision, epoch_recall, epoch_f1 = 0.0, 0.0, 0.0
+    epoch_tp, epoch_fp, epoch_fn = 0.0, 0.0, 0.0
     
     try:
         dataloader._form_tensors()
     except:
         raise RuntimeError('You use a weird type of dataset. It should be DatasetBuilder.')
         
-    for  (starts, contexts, ends, labels) in dataloader._form_tensors():
+    num_batches = 0
+    for (starts, contexts, ends, labels) in dataloader._form_tensors():
       
         starts, contexts, ends = starts.to(device), contexts.to(device), ends.to(device)
         labels = labels.to(device)
         
         code_vector, y_pred = model(starts, contexts, ends)
         loss = criterion(y_pred, labels)
-        precision, recall, f1 = precision_recall_f1(y_pred, labels, idx2target_vocab)
+        tp, fp, fn = precision_recall_f1(y_pred, labels, idx2target_vocab)
+        epoch_tp += tp
+        epoch_fp += fp
+        epoch_fn += fn
         
         if optimizer is not None:
             optimizer.zero_grad()
@@ -34,14 +38,20 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
             optimizer.step()
 
         epoch_loss += loss.item()
-        epoch_precision += precision
-        epoch_recall += recall
-        epoch_f1 += f1
+        
+        num_batches += 1
         
         if early_stop:
             break
     
-    return epoch_loss / dataloader.batch_size, epoch_precision / dataloader.batch_size, epoch_recall / dataloader.batch_size, epoch_f1 / dataloader.batch_size
+    num_batches = float(num_batches)
+    epoch_tp, epoch_fp, epoch_fn = float(epoch_tp), float(epoch_fp), float(epoch_fn)
+    epsilon = 1e-7
+    precision = epoch_tp / (epoch_tp + epoch_fp + epsilon)
+    recall = epoch_tp / (epoch_tp + epoch_fn + epsilon)
+    f1 = 2 * precision * recall / (precision + recall + epsilon)
+
+    return epoch_loss/num_batches, precision, recall, f1
     
 def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2target_vocab,
           scheduler=None, checkpoint=True, early_stop = False):
