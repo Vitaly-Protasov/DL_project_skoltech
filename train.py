@@ -4,7 +4,7 @@ from torch.nn import functional as F
 from torch.utils.data import Dataset
 
 
-def run_epoch(model, optimizer, criterion, dataloader, epoch, device, mode='train'):
+def run_epoch(model, optimizer, criterion, dataloader, epoch, device, mode='train', is_earlystop = False):
     
     if mode=='train':
         model.train()
@@ -31,13 +31,13 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, device, mode='trai
             loss.backward()
             optimizer.step()
         epoch_loss += loss.item()
-
-        break
+        if is_earlystop:
+            break
     
     return epoch_loss / len(dataloader)#, accuracy / len(dataloader) * 100
     
 def train(model, optimizer, criterion, train_loader, val_loader, n_epochs,
-          scheduler=None, checkpoint=True, freq=None, verbose=True):
+          scheduler=None, checkpoint=True, freq=None, verbose=True, is_earlystop = False):
     if verbose and freq is None:
         freq = max(1, n_epochs // 10)
     
