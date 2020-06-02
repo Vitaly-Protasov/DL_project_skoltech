@@ -58,6 +58,7 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
 
     DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(DEVICE)
+    criterion = criterion.to(DEVICE)
 
     for epoch in range(epochs):
 
