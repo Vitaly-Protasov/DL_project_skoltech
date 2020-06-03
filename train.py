@@ -60,7 +60,7 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
     list_train_f1 = []
     list_val_f1 = []
     
-    best_val_loss = float('+inf')
+    best_val_f1 = float('+inf')
 
     DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(DEVICE)
@@ -87,8 +87,8 @@ def train(model, optimizer, criterion, train_loader, val_loader, epochs, idx2tar
         list_val_f1.append(val_f1)
         
         # checkpoint
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
+        if val_f1 < best_val_f1:
+            best_val_f1 = val_f1
             
             if checkpoint:
                 torch.save(model.state_dict(), './best_model.pth')
