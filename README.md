@@ -12,7 +12,9 @@ Skoltech project of the Deep Learning course
 
 
 If you want to run it, you have two stepts:
-*  Open notebook, for example in collab by link below and run all cells.
+1) Open notebook, for example in collab by link below and run all cells.
 
-* Without notebook: **./download data.sh** and **python3 for_test_file.py**.
-*  (First one download data and the second one start learning process).
+2) Without notebook: 
+* **./download data.sh** 
+* **python3 for_test_file.py**.
+First one download data and the second one start learning process.
