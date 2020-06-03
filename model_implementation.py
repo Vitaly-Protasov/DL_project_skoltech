@@ -40,7 +40,7 @@ class code2vec_model(nn.Module):
     ## 3. Attention vector a
     #self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
     
-    configuration = BertConfig(vocab_size=self.values_vocab_size, hidden_size=self.embedding_dim)
+    configuration = BertConfig(vocab_size=self.values_vocab_size, hidden_size=12*self.embedding_dim)
     self.bert = BertModel(configuration)
 
     ## 4. Prediction
