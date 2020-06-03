@@ -58,11 +58,11 @@ class TrainingModule:
             if val_f1 < best_val_f1:
                 best_val_f1 = val_f1
                 
-                if checkpoint:
-                    torch.save(model.state_dict(), './best_model.pth')
+                if self.checkpoint:
+                    torch.save(self.model.state_dict(), './best_model.pth')
             
-            if scheduler is not None:
-                scheduler.step(val_loss)
+            if self.scheduler is not None:
+                self.scheduler.step(val_loss)
 
             print('Epoch {}: train loss - {}, validation loss - {}'.format(epoch+1, round(train_loss,5), round(val_loss,5)))
             print('\t Validation: precision - {}, recall - {}, f1_score - {}'.format(round(val_precision,5), round(val_recall,5), round(val_f1,5)))
