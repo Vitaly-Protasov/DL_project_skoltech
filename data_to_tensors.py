@@ -12,7 +12,6 @@ class TextDataset(Dataset):
         self.value_vocab = value_vocab
         self.path_vocab = path_vocab
         self.target_vocab = target_vocab
-        self.batch_size = batch_size
         self.len_dataset = sum(1 for line in open(dataset_path, 'r'))
     
     def __len__(self):
