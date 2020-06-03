@@ -78,11 +78,11 @@ class code2vec_model(nn.Module):
     code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
     print (code_vector.shape)
     print (attention_weights.shape)
-    print (self.bert(comb_context_vec).shape)
-    
 
     ## 5. Prediction
     output = self.output_linear(code_vector)
+    print (output.shape)
     # output = F.softmax(output, dim = 1)
+    print (self.bert(comb_context_vec).shape)
 
     return code_vector, output
