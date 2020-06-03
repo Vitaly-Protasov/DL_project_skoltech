@@ -71,14 +71,15 @@ class code2vec_model(nn.Module):
     ## 4. Attention mechanism
     mask = (starts > 1).float() ## if 1 then it is pad and we don't pay attention to it
 
+    print (comb_context_vec.shape)
     lin_mul = torch.matmul(comb_context_vec, self.a.T)
+    print (lin_mul.shape)
     attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
     code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
-    print (context_vec.shape) 
-    print (comb_context_vec.shape)
     print (code_vector.shape)
-    code_vector = self.bert(comb_context_vec)
-    print (code_vector.shape)
+    print (attention_weights.shape)
+    print (self.bert(comb_context_vec).shape)
+    
 
     ## 5. Prediction
     output = self.output_linear(code_vector)
