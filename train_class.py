@@ -5,7 +5,7 @@ from metrics import precision_recall_f1
 from time import time
 
 class TrainingModule:
-    def __init__(self, model, optimizer, criterion, train_loader, val_loader, epochs, idx2target_vocab, test_loader, scheduler = None, checkpoint = True, early_stop = False):
+    def __init__(self, model, optimizer, criterion, train_loader, val_loader, test_loader, epochs, idx2target_vocab, scheduler = None, checkpoint = True, early_stop = False):
         self.model = model
         self.optimizer = optimizer
         self.criterion = criterion
