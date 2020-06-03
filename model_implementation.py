@@ -29,7 +29,7 @@ class code2vec_model(nn.Module):
     self.dropout_rate = dropout_rate
     self.embedding_dim = embedding_dim
     self.labels_num = labels_num
-    self.target2idx = target2idx
+    self.path2idx = path2idx
 
     ## 1. Embeddings
     self.values_embedding = nn.Embedding(self.values_vocab_size, self.val_embedding_dim)
