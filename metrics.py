@@ -26,7 +26,7 @@ def precision_recall_f1(pred, labels, idx2target_vocab):
             if not subtoken in pr_subtokens:
                 fn += 1
 
-    epsilon = 1e-15
+    epsilon = 1e-7
 
     '''precision = tp / (tp + fp + epsilon)
     recall = tp / (tp + fn + epsilon)

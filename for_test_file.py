@@ -43,9 +43,9 @@ def main():
                              labels_num = len(target2idx))
     ########################################################################################
     N_EPOCHS = 100
-    LR = 1e-4
+    LR = 1e-3
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-3)
+    optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-4)
     criterion = nn.CrossEntropyLoss()
 
     early_stop = False # ставите True и тогда будет обучение ток для одного батча
