@@ -19,7 +19,7 @@ class TextDataset(Dataset):
     
     def __getitem__(self, idx):
         line = linecache.getline(self.dataset_path, idx + 1)
-        return line
+        return self._data_processing_one_line(line)
         
     def _data_processing_one_line(self, line):
         '''
