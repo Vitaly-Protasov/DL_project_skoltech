@@ -74,8 +74,9 @@ class code2vec_model(nn.Module):
     lin_mul = torch.matmul(comb_context_vec, self.a.T)
     attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
     code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
-    print (code_vector.shape)
+    print (context_vec.shape) 
     print (comb_context_vec.shape)
+    print (code_vector.shape)
     code_vector = self.bert(comb_context_vec)
     print (code_vector.shape)
 
