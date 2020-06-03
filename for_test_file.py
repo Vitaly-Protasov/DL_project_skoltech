@@ -42,9 +42,9 @@ def main():
                              paths_vocab_size = len(path2idx), 
                              labels_num = len(target2idx))
     ########################################################################################
-    N_EPOCHS = 50
+    N_EPOCHS = 100
     LR = 1e-4
-    WD = 1e-3
+
     optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-3)
     criterion = nn.CrossEntropyLoss()
 
@@ -54,6 +54,7 @@ def main():
                                                                                                                                                     val_loader = val_loader,
                                                                                                                                                     epochs = N_EPOCHS, idx2target_vocab = idx2target, 
                                                                                                                                                     scheduler=None, checkpoint=True, early_stop = early_stop)
-                                                                                                                                                    
+
+    
 if __name__== "__main__":
   main()
