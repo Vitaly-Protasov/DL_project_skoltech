@@ -18,7 +18,6 @@ def main():
     torch.backends.cudnn.deterministic = True
     
 
-
     dict_path = 'data/java-small/java-small.dict.c2v'
     word2idx, path2idx, target2idx, idx2target = create_vocab.create_vocab(dict_path)
 
