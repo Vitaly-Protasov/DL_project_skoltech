@@ -17,4 +17,5 @@ If you want to run it, you have two stepts:
 2) Without notebook: 
 * **./download data.sh** 
 * **python3 for_test_file.py**.
+
 First one download data and the second one start learning process.
