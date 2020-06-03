@@ -4,7 +4,6 @@ import torch.nn.functional as F
 
 
 dimZ = 100
-
 class Autoencoder(nn.Module):
     def __init__(self):
         super(Autoencoder, self).__init__()
