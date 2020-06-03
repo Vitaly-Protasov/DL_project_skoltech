@@ -38,7 +38,9 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=20, shuffle=False)
                                      
         
-    
+    model = model_implementation.code2vec_model(values_vocab_size = len(word2idx), 
+                             paths_vocab_size = len(path2idx), 
+                             labels_num = len(target2idx))
     ########################################################################################
     N_EPOCHS = 50
     LR = 1e-4
