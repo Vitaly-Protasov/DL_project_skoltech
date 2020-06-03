@@ -4,7 +4,7 @@ from torch.nn import functional as F
 from metrics import precision_recall_f1
 from time import time
 
-def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, target2idx, mode='train', device = None, early_stop = False):
+def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, mode='train', device = None, early_stop = False):
   
     if mode == 'train':
         model.train()
@@ -48,7 +48,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
 
     return epoch_loss/num_batches, precision, recall, f1
     
-def train(model, optimizer, criterion, train_loader, val_loader, test_loader, epochs, idx2target_vocab, target2idx,
+def train(model, optimizer, criterion, train_loader, val_loader, test_loader, epochs, idx2target_vocab,
           scheduler=None, checkpoint=True, early_stop = False):
     
     list_train_loss = []
@@ -70,9 +70,9 @@ def train(model, optimizer, criterion, train_loader, val_loader, test_loader, ep
       
         start_time = time()
 
-        train_loss, train_precision, train_recall, train_f1 = run_epoch(model, optimizer, criterion, train_loader, epoch,idx2target_vocab, target2idx, mode = 'train', device = DEVICE, early_stop = early_stop)
-        val_loss, val_precision, val_recall, val_f1 = run_epoch(model, None, criterion, val_loader, epoch, idx2target_vocab, target2idx, mode = 'val', device = DEVICE, early_stop = early_stop)
-        test_loss, test_precision, test_recall, test_f1 = run_epoch(model, None, criterion, test_loader, epoch, idx2target_vocab, target2idx, mode = 'val', device = DEVICE, early_stop = early_stop)
+        train_loss, train_precision, train_recall, train_f1 = run_epoch(model, optimizer, criterion, train_loader, epoch,idx2target_vocab, mode = 'train', device = DEVICE, early_stop = early_stop)
+        val_loss, val_precision, val_recall, val_f1 = run_epoch(model, None, criterion, val_loader, epoch, idx2target_vocab, mode = 'val', device = DEVICE, early_stop = early_stop)
+        test_loss, test_precision, test_recall, test_f1 = run_epoch(model, None, criterion, test_loader, epoch, idx2target_vocab, mode = 'val', device = DEVICE, early_stop = early_stop)
 
 
         list_train_loss.append(train_loss)
