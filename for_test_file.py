@@ -11,7 +11,7 @@ import random
 from torch.utils.data import *
 
 def main():
-    SEED = 1234
+    SEED = 1337
     random.seed(SEED)
     torch.manual_seed(SEED)
     torch.cuda.manual_seed(SEED)
@@ -35,7 +35,7 @@ def main():
                                                         target2idx)
 
     train_loader = DataLoader(train_dataset, batch_size=1024, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=20, shuffle=False)
+    val_loader = DataLoader(val_dataset, batch_size=100, shuffle=False)
                                      
         
     model = model_implementation.code2vec_model(values_vocab_size = len(word2idx), 
