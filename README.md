@@ -9,6 +9,7 @@ Skoltech project of the Deep Learning course
 ## Authors of this project (in alphabet order):
 
 **Alexander Selivanov, Kristina Ivanova, Lucy Airapetyan, Vitaly Protasov.**
+
 ---
 
 If you want to run it, you have two stepts:
