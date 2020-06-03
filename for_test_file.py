@@ -41,8 +41,8 @@ def main():
                                                         target2idx)
 
     train_loader = DataLoader(train_dataset, batch_size=1024, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=100, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=100, shuffle=False)                                 
+    val_loader = DataLoader(val_dataset, batch_size=512, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=512, shuffle=False)                                 
         
     model = model_implementation.code2vec_model(values_vocab_size = len(word2idx), 
                              paths_vocab_size = len(path2idx), 
@@ -51,7 +51,7 @@ def main():
     N_EPOCHS = 50
     LR = 3e-3
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-5)
+    optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1.1e-5)
     criterion = nn.CrossEntropyLoss()
 
     early_stop = False # ставите True и тогда будет обучение ток для одного батча
