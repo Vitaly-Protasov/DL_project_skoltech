@@ -18,7 +18,8 @@ class code2vec_model(nn.Module):
                embedding_dim = 128,
                values_vocab_size = 0,
                paths_vocab_size = 0,
-               labels_num = 0):
+               labels_num = 0,
+               path2idx=dict()):
     super().__init__()
 
     self.values_vocab_size = values_vocab_size
@@ -28,6 +29,7 @@ class code2vec_model(nn.Module):
     self.dropout_rate = dropout_rate
     self.embedding_dim = embedding_dim
     self.labels_num = labels_num
+    self.target2idx = target2idx
 
     ## 1. Embeddings
     self.values_embedding = nn.Embedding(self.values_vocab_size, self.val_embedding_dim)
@@ -48,7 +50,7 @@ class code2vec_model(nn.Module):
 
     self.neg_INF = - 2 * 10**10
 
-  def forward(self, starts, paths, ends):
+  def forward(self, starts, paths, ends, labels):
 
     """
     input for starts,paths,ends - [[],[],[]...[]] - N_paths * BATCH_SIZE
@@ -83,6 +85,7 @@ class code2vec_model(nn.Module):
     output = self.output_linear(code_vector)
     print (output.shape)
     # output = F.softmax(output, dim = 1)
-    print (self.bert(comb_context_vec).shape)
+    label_ids = [self.path2idx[path] for path in paths]
+    print (self.bert(input_ids=label_ids, attention_mask=mask, inputs_embeds=comb_context_vec).shape)
 
     return code_vector, output
