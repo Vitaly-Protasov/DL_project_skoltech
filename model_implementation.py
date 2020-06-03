@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from transformers import BertModel, BertConfig
 
 
 class code2vec_model(nn.Module):
@@ -37,7 +38,10 @@ class code2vec_model(nn.Module):
     self.linear = nn.Linear(self.path_embedding_dim + 2 * self.val_embedding_dim, self.embedding_dim, bias = False)
 
     ## 3. Attention vector a
-    self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
+    #self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
+    
+    configuration = BertConfig(vocab_size=self.values_vocab_size, hidden_size=self.embedding_dim)
+    self.bert = BertModel(configuration)
 
     ## 4. Prediction
     self.output_linear = nn.Linear(self.embedding_dim, self.labels_num, bias = False)
@@ -70,6 +74,10 @@ class code2vec_model(nn.Module):
     lin_mul = torch.matmul(comb_context_vec, self.a.T)
     attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
     code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
+    print (code_vector.shape)
+    print (comb_context_vec.shape)
+    code_vector = self.bert(comb_context_vec)
+    print (code_vector.shape)
 
     ## 5. Prediction
     output = self.output_linear(code_vector)
