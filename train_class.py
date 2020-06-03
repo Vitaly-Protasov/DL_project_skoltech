@@ -100,7 +100,7 @@ class TrainingModule:
             epoch_fp += fp
             epoch_fn += fn
             
-            if mode != 'train':
+            if mode == 'train':
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
