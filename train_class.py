@@ -83,10 +83,10 @@ class TrainingModule:
         epoch_loss = 0.0
         epoch_tp, epoch_fp, epoch_fn = 0.0, 0.0, 0.0
         
-        #try:
-        #    dataloader._form_tensors()
-        #except:
-        #    raise RuntimeError('You use a weird type of dataset. It should be DatasetBuilder.')
+        try:
+            dataloader._data_processing_one_line()
+        except:
+            raise RuntimeError('You use a weird type of dataset. It should be TextDataset.')
             
         num_batches = 0
         for starts, contexts, ends, labels in dataloader:
