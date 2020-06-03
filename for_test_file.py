@@ -11,7 +11,7 @@ import random
 from torch.utils.data import *
 
 def main():
-    SEED = 1234
+    SEED = 1337
     random.seed(SEED)
     torch.manual_seed(SEED)
     torch.cuda.manual_seed(SEED)
@@ -33,25 +33,31 @@ def main():
                                                         word2idx, 
                                                         path2idx, 
                                                         target2idx)
+                                                        
+    path_for_test = 'data/java-small/java-small.test.c2v'
+    test_dataset = data_to_tensors.TextDataset(path_for_test, 
+                                                        word2idx, 
+                                                        path2idx, 
+                                                        target2idx)
 
     train_loader = DataLoader(train_dataset, batch_size=1024, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=256, shuffle=False)
-                                     
+    val_loader = DataLoader(val_dataset, batch_size=100, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=100, shuffle=False)                                 
         
     model = model_implementation.code2vec_model(values_vocab_size = len(word2idx), 
                              paths_vocab_size = len(path2idx), 
                              labels_num = len(target2idx))
     ########################################################################################
-    N_EPOCHS = 100
-    LR = 1e-3
+    N_EPOCHS = 50
+    LR = 3e-3
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-4)
+    optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-5)
     criterion = nn.CrossEntropyLoss()
 
     early_stop = False # ставите True и тогда будет обучение ток для одного батча
     list_train_loss, list_val_loss, list_train_precision, list_val_precision,list_train_recall, list_val_recall, list_train_f1, list_val_f1 = train(model = model, optimizer = optimizer,
                                                                                                                                                     criterion = criterion, train_loader = train_loader,
-                                                                                                                                                    val_loader = val_loader,
+                                                                                                                                                    val_loader = val_loader, test_loader = test_loader,
                                                                                                                                                     epochs = N_EPOCHS, idx2target_vocab = idx2target, 
                                                                                                                                                     scheduler=None, checkpoint=True, early_stop = early_stop)
 
