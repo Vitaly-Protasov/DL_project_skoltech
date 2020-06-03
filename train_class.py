@@ -34,7 +34,7 @@ class TrainingModule:
         self.model.to(self.DEVICE)
         self.criterion = self.criterion.to(self.DEVICE)
         
-        for epoch in range(epochs):
+        for epoch in range(self.epochs):
           
             start_time = time()
 
