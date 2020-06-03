@@ -15,7 +15,7 @@ def run_epoch(model, optimizer, criterion, dataloader, epoch, idx2target_vocab, 
     epoch_tp, epoch_fp, epoch_fn = 0.0, 0.0, 0.0
     
     num_batches = 0
-    for (starts, contexts, ends, labels) in dataloader:
+    for starts, contexts, ends, labels in dataloader:
       
         starts, contexts, ends = starts.to(device), contexts.to(device), ends.to(device)
         labels = labels.to(device)
