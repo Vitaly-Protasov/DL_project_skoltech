@@ -42,7 +42,7 @@ class code2vec_model(nn.Module):
     ## 3. Attention vector a
     self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
     context_size = self.path_embedding_dim + 2 * self.val_embedding_dim
-    print (self.values_vocab_size, self.paths_vocab_size)
+    vocab_size = self.values_vocab_size, self.paths_vocab_size)
     configuration = BertConfig(type_vocab_size=1, vocab_size=self.values_vocab_size, hidden_size=self.embedding_dim, num_attention_heads=8, intermediate_size=context_size)
     self.bert = BertModel(configuration)
     print (self.bert.modules)
@@ -75,13 +75,11 @@ class code2vec_model(nn.Module):
     ## 4. Attention mechanism
     mask = (starts > 1).float() ## if 1 then it is pad and we don't pay attention to it
 
-    print (comb_context_vec.shape)
     lin_mul = torch.matmul(comb_context_vec, self.a.T)
-    print (lin_mul.shape)
+
     attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
     code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
-    print (code_vector.shape)
-    print (attention_weights.shape)
+
 
     ## 5. Prediction
     output = self.output_linear(code_vector)
