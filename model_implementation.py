@@ -19,7 +19,7 @@ class code2vec_model(nn.Module):
                values_vocab_size = 0,
                paths_vocab_size = 0,
                labels_num = 0,
-               bert = True,
+               bert = False,
                bert_params = {'num_attention_heads': 8, 'num_transformer_layers': 4, 'intermediate_size': 256}
                ):
     super().__init__()
@@ -32,7 +32,7 @@ class code2vec_model(nn.Module):
     self.embedding_dim = embedding_dim
     self.labels_num = labels_num
     self.bert = bert
-
+    
     ## 1. Embeddings
     self.values_embedding = nn.Embedding(self.values_vocab_size, self.val_embedding_dim)
     self.paths_embedding = nn.Embedding(self.paths_vocab_size, self.path_embedding_dim)
