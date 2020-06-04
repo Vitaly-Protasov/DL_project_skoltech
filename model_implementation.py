@@ -19,6 +19,7 @@ class code2vec_model(nn.Module):
                values_vocab_size = 0,
                paths_vocab_size = 0,
                labels_num = 0,
+               bert = True,
                bert_params = {'num_attention_heads': 8, 'num_transformer_layers': 4, 'intermediate_size': 256}
                ):
     super().__init__()
@@ -40,12 +41,14 @@ class code2vec_model(nn.Module):
     self.linear = nn.Linear(self.path_embedding_dim + 2 * self.val_embedding_dim, self.embedding_dim, bias = False)
 
     ## 3. Attention vector a
-    #self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
-    num_attention_heads = bert_params['num_attention_heads']
-    num_transformer_layers = bert_params['num_transformer_layers']
-    intermediate_size = bert_params['intermediate_size']
-    configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size, hidden_dropout_prob=dropout_rate, attention_probs_dropout_prob=dropout_rate)
-    self.bert = BertModel(configuration)
+    if bert:
+      num_attention_heads = bert_params['num_attention_heads']
+      num_transformer_layers = bert_params['num_transformer_layers']
+      intermediate_size = bert_params['intermediate_size']
+      configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size, hidden_dropout_prob=dropout_rate, attention_probs_dropout_prob=dropout_rate)
+      self.bert = BertModel(configuration)
+    else:
+      self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
     
     ## 4. Prediction
     self.output_linear = nn.Linear(self.embedding_dim, self.labels_num, bias = False)
@@ -73,10 +76,13 @@ class code2vec_model(nn.Module):
 
     ## 4. Attention mechanism
     mask = (starts > 1).float() ## if 1 then it is pad and we don't pay attention to it
-    '''lin_mul = torch.matmul(comb_context_vec, self.a.T)
-    attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
-    code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)'''
-    _, code_vector = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
+    
+    if bert:
+      _, code_vector = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
+    else:
+      lin_mul = torch.matmul(comb_context_vec, self.a.T)
+      attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
+      code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
 
     ## 5. Prediction
     
