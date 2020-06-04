@@ -31,10 +31,17 @@ def main():
                                                         word2idx, 
                                                         path2idx, 
                                                         target2idx)
+    
+    path_for_test = 'data/java-small/java-small.test.c2v'
+    test_dataset = data_to_tensors.TextDataset(path_for_test, 
+                                                        word2idx, 
+                                                        path2idx, 
+                                                        target2idx)
                                                         
 
     train_loader = DataLoader(train_dataset, batch_size=512, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=512, shuffle=False)                               
+    val_loader = DataLoader(val_dataset, batch_size=512, shuffle=False)   
+    test_loader = DataLoader(test_dataset, batch_size=512, shuffle=False)      
         
     model = model_implementation.code2vec_model(values_vocab_size = len(word2idx), 
                              paths_vocab_size = len(path2idx), 
@@ -46,7 +53,7 @@ def main():
     optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-5)
     criterion = nn.CrossEntropyLoss()
 
-    train_class = TrainingModule(model, optimizer, criterion, train_loader, val_loader, N_EPOCHS, idx2target)
+    train_class = TrainingModule(model, optimizer, criterion, train_loader, val_loader, test_loader, N_EPOCHS, idx2target)
     list_train_loss, list_val_loss, list_train_precision, list_val_precision,list_train_recall, list_val_recall, list_train_f1, list_val_f1 = train_class.train()
 
     
