@@ -42,6 +42,7 @@ class code2vec_model(nn.Module):
     ## 3. Attention vector a
     self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
     context_size = self.path_embedding_dim + 2 * self.val_embedding_dim
+    print (self.values_vocab_size, self.paths_vocab_size)
     configuration = BertConfig(type_vocab_size=1, vocab_size=self.values_vocab_size, hidden_size=self.embedding_dim, num_attention_heads=8, intermediate_size=context_size)
     self.bert = BertModel(configuration)
     print (self.bert.modules)
