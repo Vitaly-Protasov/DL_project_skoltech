@@ -92,6 +92,6 @@ class code2vec_model(nn.Module):
     print (b_output[0].shape, b_output[1].shape)
     print (b_output[0][mask].shape, b_output[1].shape)
     output = self.output_linear(b_output[1])
-    return b_output
+    return code_vector, output
 
     return code_vector, output
