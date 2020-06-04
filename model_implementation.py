@@ -20,8 +20,7 @@ class code2vec_model(nn.Module):
                paths_vocab_size = 0,
                labels_num = 0,
                bert = False,
-               bert_params = None
-               ):
+               bert_params = None):
     super().__init__()
 
     self.values_vocab_size = values_vocab_size

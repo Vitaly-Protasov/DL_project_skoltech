@@ -41,7 +41,7 @@ class TrainingModule:
 
             train_loss, train_precision, train_recall, train_f1 = self.run_epoch(mode = 'train', dataloader = self.train_loader)
             val_loss, val_precision, val_recall, val_f1 = self.run_epoch(mode = 'val', dataloader = self.val_loader)
-            _, test_precision, test_recall, test_f1 = self.run_epoch(mode = 'val', dataloader = self.test_loader)
+            #_, test_precision, test_recall, test_f1 = self.run_epoch(mode = 'val', dataloader = self.test_loader)
 
             list_train_loss.append(train_loss)
             list_val_loss.append(val_loss)
@@ -67,7 +67,7 @@ class TrainingModule:
 
             print('Epoch {}: train loss - {}, validation loss - {}'.format(epoch+1, round(train_loss,5), round(val_loss,5)))
             print('\t Validation: precision - {}, recall - {}, f1_score - {}'.format(round(val_precision,5), round(val_recall,5), round(val_f1,5)))
-            print('\t Test: precision - {}, recall - {}, f1_score - {}'.format(round(test_precision,5), round(test_recall,5), round(test_f1,5)))
+            #print('\t Test: precision - {}, recall - {}, f1_score - {}'.format(round(test_precision,5), round(test_recall,5), round(test_f1,5)))
             
             print ('Elapsed time: %.3f' % (time() - start_time))
             print('----------------------------------------------------------------------')
