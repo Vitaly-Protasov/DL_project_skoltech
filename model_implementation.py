@@ -19,8 +19,8 @@ class code2vec_model(nn.Module):
                values_vocab_size = 0,
                paths_vocab_size = 0,
                labels_num = 0,
-               num_attention_heads,
-               num_transformer_layers,
+               num_attention_heads=8,
+               num_transformer_layers=4,
                ):
     super().__init__()
 
