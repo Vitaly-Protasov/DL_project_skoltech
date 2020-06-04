@@ -20,7 +20,7 @@ class code2vec_model(nn.Module):
                paths_vocab_size = 0,
                labels_num = 0,
                bert = False,
-               bert_params = {'num_attention_heads': 8, 'num_transformer_layers': 4, 'intermediate_size': 256}
+               bert_params = None
                ):
     super().__init__()
 
@@ -42,7 +42,7 @@ class code2vec_model(nn.Module):
     self.linear = nn.Linear(self.path_embedding_dim + 2 * self.val_embedding_dim, self.embedding_dim, bias = False)
 
     ## 3. Attention vector a
-    if bert:
+    if bert and bert_params != None:
       num_attention_heads = bert_params['num_attention_heads']
       num_transformer_layers = bert_params['num_transformer_layers']
       intermediate_size = bert_params['intermediate_size']
