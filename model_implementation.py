@@ -74,7 +74,7 @@ class code2vec_model(nn.Module):
 
     ## 4. Attention mechanism
     mask = (starts > 1).float() ## if 1 then it is pad and we don't pay attention to it
-
+    print (mask.shape)
     lin_mul = torch.matmul(comb_context_vec, self.a.T)
 
     attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
