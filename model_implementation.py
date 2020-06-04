@@ -19,9 +19,7 @@ class code2vec_model(nn.Module):
                values_vocab_size = 0,
                paths_vocab_size = 0,
                labels_num = 0,
-               num_attention_heads=8,
-               num_transformer_layers=4,
-               intermediate_size = 256
+               bert_params = {'num_attention_heads': 8, 'num_transformer_layers': 4, 'intermediate_size': 256}
                ):
     super().__init__()
 
@@ -43,6 +41,9 @@ class code2vec_model(nn.Module):
 
     ## 3. Attention vector a
     #self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
+    num_attention_heads = bert_params['num_attention_heads']
+    num_transformer_layers = bert_params['num_transformer_layers']
+    intermediate_size = bert_params['intermediate_size']
     configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size)
     self.bert = BertModel(configuration)
     
