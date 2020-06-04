@@ -21,6 +21,7 @@ class code2vec_model(nn.Module):
                labels_num = 0,
                num_attention_heads=8,
                num_transformer_layers=4,
+               intermediate_size = 256
                ):
     super().__init__()
 
@@ -42,7 +43,7 @@ class code2vec_model(nn.Module):
 
     ## 3. Attention vector a
     #self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
-    configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, num_hidden_layers=num_transformer_layers)
+    configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size)
     self.bert = BertModel(configuration)
     
     ## 4. Prediction
