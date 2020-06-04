@@ -89,6 +89,6 @@ class code2vec_model(nn.Module):
     #label_ids = torch.cat((starts, paths, ends), dim=1)
     b_output = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
     print (b_output[0].shape, b_output[1].shape)
-    return b_output
+    #return b_output
 
     return code_vector, output
