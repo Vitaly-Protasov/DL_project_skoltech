@@ -90,7 +90,7 @@ class TrainingModule:
             starts, contexts, ends = starts.to(self.DEVICE), contexts.to(self.DEVICE), ends.to(self.DEVICE)
             labels = labels.to(self.DEVICE)
             
-            code_vector, y_pred = self.model(starts, contexts, ends)
+            _, y_pred = self.model(starts, contexts, ends)
             loss = self.criterion(y_pred, labels)
             tp, fp, fn = precision_recall_f1(y_pred, labels, self.idx2target_vocab)
             epoch_tp += tp

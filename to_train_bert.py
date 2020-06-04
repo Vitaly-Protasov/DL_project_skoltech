@@ -14,7 +14,7 @@ try:
 except:
     raise RuntimeError('Please: pip install transformers')
 
-def main():
+def main(batch_size, lr, wd):
     SEED = 1337
     random.seed(SEED)
     torch.manual_seed(SEED)
@@ -43,9 +43,9 @@ def main():
                                                         path2idx, 
                                                         target2idx)
                                                         
-    train_loader = DataLoader(train_dataset, batch_size=512, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=512, shuffle=False)  
-    test_loader = DataLoader(test_dataset, batch_size=512, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)  
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
     bert = True
     bert_params = dict()
@@ -57,16 +57,20 @@ def main():
                                  paths_vocab_size = len(path2idx), 
                                  labels_num = len(target2idx), bert=bert, bert_params=bert_params)
     ########################################################################################
-    N_EPOCHS = 20
-    LR = 3e-3
-    WD = 0.8e-5
+    N_EPOCHS = 40
+    LR = lr
+    WD = wd
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WD)
     criterion = nn.CrossEntropyLoss()
 
     train_class = TrainingModule(model, optimizer, criterion, train_loader, val_loader, test_loader, N_EPOCHS, idx2target)
-    list_train_loss, list_val_loss, list_train_precision, list_val_precision,list_train_recall, list_val_recall, list_train_f1, list_val_f1 = train_class.train()
+    _, _, _, _,_, _, _, _ = train_class.train()
 
         
 if __name__== "__main__":
-  main()
+    batch_size = int(input('Input batch size: '))
+    lr = float(input('Input learning rate: '))
+    wd = float(input('Input weight decay: '))
+    
+    main(batch_size, lr, wd)
