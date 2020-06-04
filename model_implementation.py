@@ -44,6 +44,7 @@ class code2vec_model(nn.Module):
     context_size = self.path_embedding_dim + 2 * self.val_embedding_dim
     configuration = BertConfig(vocab_size=self.values_vocab_size, hidden_size=12*self.embedding_dim, intermediate_size=context_size)
     self.bert = BertModel(configuration)
+    print (self.bert.modules)
 
     ## 4. Prediction
     self.output_linear = nn.Linear(self.embedding_dim, self.labels_num, bias = False)
