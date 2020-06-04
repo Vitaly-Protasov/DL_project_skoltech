@@ -87,6 +87,8 @@ class code2vec_model(nn.Module):
     print (output.shape)
     # output = F.softmax(output, dim = 1)
     #label_ids = torch.cat((starts, paths, ends), dim=1)
-    print (self.bert(attention_mask=mask, inputs_embeds=comb_context_vec).shape)
+    b_output = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
+    print (len(b_output), b_output[0])
+    print (b_output[1])
 
     return code_vector, output
