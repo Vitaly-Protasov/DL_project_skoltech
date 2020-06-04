@@ -40,17 +40,12 @@ class code2vec_model(nn.Module):
     self.linear = nn.Linear(self.path_embedding_dim + 2 * self.val_embedding_dim, self.embedding_dim, bias = False)
 
     ## 3. Attention vector a
-    self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
-    context_size = self.path_embedding_dim + 2 * self.val_embedding_dim
-    #vocab_size = self.values_vocab_size, self.paths_vocab_size
-    configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=8)#, intermediate_size=context_size)
+    #self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
+    configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=8)
     self.bert = BertModel(configuration)
-    print (self.bert.modules)
-
+    
     ## 4. Prediction
     self.output_linear = nn.Linear(self.embedding_dim, self.labels_num, bias = False)
-    print (self.embedding_dim, self.labels_num)
-
     self.neg_INF = - 2 * 10**10
 
   def forward(self, starts, paths, ends, labels):
@@ -75,23 +70,12 @@ class code2vec_model(nn.Module):
 
     ## 4. Attention mechanism
     mask = (starts > 1).float() ## if 1 then it is pad and we don't pay attention to it
-    print (mask.shape)
-    lin_mul = torch.matmul(comb_context_vec, self.a.T)
-
+    '''lin_mul = torch.matmul(comb_context_vec, self.a.T)
     attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
-    code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
-
+    code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)'''
+    _, code_vector = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
 
     ## 5. Prediction
+    
     output = self.output_linear(code_vector)
-    print (code_vector.shape, output.shape)
-    # output = F.softmax(output, dim = 1)
-    #label_ids = torch.cat((starts, paths, ends), dim=1)
-    b_output = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
-    mask = mask.bool()
-    print (b_output[0].shape, b_output[1].shape)
-    print (b_output[0][mask].shape, b_output[1].shape)
-    output = self.output_linear(b_output[1])
-    return code_vector, output
-
     return code_vector, output
