@@ -43,7 +43,7 @@ class code2vec_model(nn.Module):
     self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
     context_size = self.path_embedding_dim + 2 * self.val_embedding_dim
     #vocab_size = self.values_vocab_size, self.paths_vocab_size
-    configuration = BertConfig(type_vocab_size=1, vocab_size=self.values_vocab_size, hidden_size=self.embedding_dim, num_attention_heads=8, intermediate_size=context_size)
+    configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=8, intermediate_size=context_size)
     self.bert = BertModel(configuration)
     print (self.bert.modules)
 
@@ -89,6 +89,6 @@ class code2vec_model(nn.Module):
     #label_ids = torch.cat((starts, paths, ends), dim=1)
     b_output = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
     print (b_output[0].shape, b_output[1].shape)
-    #return b_output
+    return b_output
 
     return code_vector, output
