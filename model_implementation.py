@@ -31,6 +31,7 @@ class code2vec_model(nn.Module):
     self.dropout_rate = dropout_rate
     self.embedding_dim = embedding_dim
     self.labels_num = labels_num
+    self.bert = bert
 
     ## 1. Embeddings
     self.values_embedding = nn.Embedding(self.values_vocab_size, self.val_embedding_dim)
@@ -77,7 +78,7 @@ class code2vec_model(nn.Module):
     ## 4. Attention mechanism
     mask = (starts > 1).float() ## if 1 then it is pad and we don't pay attention to it
     
-    if bert:
+    if self.bert:
       _, code_vector = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
     else:
       lin_mul = torch.matmul(comb_context_vec, self.a.T)
