@@ -84,11 +84,11 @@ class code2vec_model(nn.Module):
 
     ## 5. Prediction
     output = self.output_linear(code_vector)
-    print (output.shape)
+    print (code_vector.shape, output.shape)
     # output = F.softmax(output, dim = 1)
     #label_ids = torch.cat((starts, paths, ends), dim=1)
     b_output = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
-    print (len(b_output), b_output[0])
-    print (b_output[1])
+    print (b_output[0].shape, b_output[1].shape)
+    return b_output
 
     return code_vector, output
