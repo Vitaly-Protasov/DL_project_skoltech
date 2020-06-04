@@ -41,12 +41,16 @@ class code2vec_model(nn.Module):
     self.DropOut = nn.Dropout(self.dropout_rate)
     self.linear = nn.Linear(self.path_embedding_dim + 2 * self.val_embedding_dim, self.embedding_dim, bias = False)
 
-    ## 3. Attention vector a
+    ## 3. Bert or attention vector a
     if bert and bert_params != None:
       num_attention_heads = bert_params['num_attention_heads']
       num_transformer_layers = bert_params['num_transformer_layers']
       intermediate_size = bert_params['intermediate_size']
-      configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size, hidden_dropout_prob=dropout_rate, attention_probs_dropout_prob=dropout_rate)
+      configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, 
+                                 hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, 
+                                 num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size, 
+                                 hidden_dropout_prob=dropout_rate, attention_probs_dropout_prob=dropout_rate)
+                                 
       self.bert = BertModel(configuration)
     else:
       self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
@@ -55,8 +59,7 @@ class code2vec_model(nn.Module):
     self.output_linear = nn.Linear(self.embedding_dim, self.labels_num, bias = False)
     self.neg_INF = - 2 * 10**10
 
-  def forward(self, starts, paths, ends, labels):
-
+  def forward(self, starts, paths, ends):
     """
     input for starts,paths,ends - [[],[],[]...[]] - N_paths * BATCH_SIZE
     We form the indexed vocab of left_nodes, paths, right_nodes
