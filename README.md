@@ -23,10 +23,13 @@
 1) First of all, you can open ipython notebook in colab via link above. Just run all cells, it's easy to do.
 2) Without notebook in the console:
 
-##### In order to download data:
+##### First of all, clone notebook:
 ```
 git clone https://github.com/Vitaly-Protasov/DL_project_skoltech
 cd DL_project_skoltech
+```
+##### In order to download data:
+```
 ./download data.sh
 ```
 ##### Start train the NN from the original article:
