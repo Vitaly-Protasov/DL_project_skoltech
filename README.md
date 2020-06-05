@@ -25,7 +25,9 @@
 
 ##### In order to download data:
 ```
-   ./download data.sh
+git clone https://github.com/Vitaly-Protasov/DL_project_skoltech
+cd DL_project_skoltech
+./download data.sh
 ```
 ##### Start train the NN from the original article:
 ```
