@@ -20,7 +20,7 @@
 3) __Also, we applied Bert architecture instead of attention layer in the original article.__ Results you can see below:
 
 ## If you want to run our code
-1) First of all, you can open ipython notebook in colab via link: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Vitaly-Protasov/DL_project_skoltech/) Just run all cells, it's easy to do. 
+1) First of all, you can open ipython notebook in colab via the button above. Just run all cells, it's easy to do. 
 2) Without notebook in the console:
 
 ##### First of all, clone notebook:
