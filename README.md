@@ -37,6 +37,11 @@ cd DL_project_skoltech
 python3 to_train_article_model.py
 ```
 ##### Start train improved version with Transformer inside:
+* Install transformers library, we used it: 
+```
+pip3 install transformers
+```
+
 ```
 python3 to_train_bert.py
 ```
