@@ -23,12 +23,12 @@
 1) First of all, you can open ipython notebook in colab via the button above. Just run all cells, it's easy to do. 
 2) Without notebook in the console:
 
-##### First of all, clone notebook:
+##### First of all, clone our repository:
 ```
 git clone https://github.com/Vitaly-Protasov/DL_project_skoltech
 cd DL_project_skoltech
 ```
-##### In order to download data:
+##### In order to download data just use shell script:
 ```
 ./download data.sh
 ```
