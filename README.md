@@ -42,7 +42,7 @@ python3 to_train_article_model.py
 pip3 install transformers
 ```
 
-* Run python file:
+* Run python file for training:
 
 ```
 python3 to_train_bert.py
