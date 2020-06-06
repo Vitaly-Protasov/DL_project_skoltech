@@ -19,9 +19,8 @@ class code2vec_model(nn.Module):
                values_vocab_size = 0,
                paths_vocab_size = 0,
                labels_num = 0,
-               bert = True,
-               bert_params = {'num_attention_heads': 8, 'num_transformer_layers': 4, 'intermediate_size': 256}
-               ):
+               bert = False,
+               bert_params = None):
     super().__init__()
 
     self.values_vocab_size = values_vocab_size
@@ -32,7 +31,7 @@ class code2vec_model(nn.Module):
     self.embedding_dim = embedding_dim
     self.labels_num = labels_num
     self.bert = bert
-
+    
     ## 1. Embeddings
     self.values_embedding = nn.Embedding(self.values_vocab_size, self.val_embedding_dim)
     self.paths_embedding = nn.Embedding(self.paths_vocab_size, self.path_embedding_dim)
@@ -41,12 +40,16 @@ class code2vec_model(nn.Module):
     self.DropOut = nn.Dropout(self.dropout_rate)
     self.linear = nn.Linear(self.path_embedding_dim + 2 * self.val_embedding_dim, self.embedding_dim, bias = False)
 
-    ## 3. Attention vector a
-    if bert:
+    ## 3. Bert or attention vector a
+    if bert and bert_params != None:
       num_attention_heads = bert_params['num_attention_heads']
       num_transformer_layers = bert_params['num_transformer_layers']
       intermediate_size = bert_params['intermediate_size']
-      configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size, hidden_dropout_prob=dropout_rate, attention_probs_dropout_prob=dropout_rate)
+      configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, 
+                                 hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, 
+                                 num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size, 
+                                 hidden_dropout_prob=dropout_rate, attention_probs_dropout_prob=dropout_rate)
+                                 
       self.bert = BertModel(configuration)
     else:
       self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
@@ -55,8 +58,7 @@ class code2vec_model(nn.Module):
     self.output_linear = nn.Linear(self.embedding_dim, self.labels_num, bias = False)
     self.neg_INF = - 2 * 10**10
 
-  def forward(self, starts, paths, ends, labels):
-
+  def forward(self, starts, paths, ends):
     """
     input for starts,paths,ends - [[],[],[]...[]] - N_paths * BATCH_SIZE
     We form the indexed vocab of left_nodes, paths, right_nodes
@@ -86,6 +88,5 @@ class code2vec_model(nn.Module):
       code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
 
     ## 5. Prediction
-    
     output = self.output_linear(code_vector)
     return code_vector, output
