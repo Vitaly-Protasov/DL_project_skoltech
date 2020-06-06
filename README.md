@@ -11,7 +11,7 @@
 1) We reimplemented the **original article:** [code2vec by U. Alon et al](https://arxiv.org/pdf/1803.09473.pdf).
 2) We improved _F1-score_ on the test dataset of java14m-data [here you can find dataset](https://github.com/tech-srl/code2vec).
 
-|  Our implementation:     |Best F1-score| U. Alon work| 
+|    Best F1-scores:   |Our implementation| U. Alon work| 
 | ---------------|:-----------:| :-----------:| 
 | **Batch size 128 Test**|    0.17671   |  0.1752|  
 | **Batch size 128 Validation**| 0.20213| -|  
