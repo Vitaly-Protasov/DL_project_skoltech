@@ -57,3 +57,8 @@ python3 to_train_bert.py
 
 As the parameters which you need to vary are _batch_size_ of validation and train datasets, 
 _learning rate_ and _weight decay_ for optimization algorithm.
+
+### Results of predictions
+Here you can see how our models predict names
+
+![Picture](http://images.vfl.ru/ii/1591542530/5f271638/30743649.png)
