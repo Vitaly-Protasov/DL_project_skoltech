@@ -45,7 +45,7 @@ class code2vec_model(nn.Module):
       num_attention_heads = bert_params['num_attention_heads']
       num_transformer_layers = bert_params['num_transformer_layers']
       intermediate_size = bert_params['intermediate_size']
-      self.scale = torch.nn.Parameter(torch.sqrt(torch.tensor(hidden_size, dtype=torch.float32)), requires_grad=False)
+      self.scale = torch.nn.Parameter(torch.sqrt(torch.tensor(self.embedding_dim, dtype=torch.float32)), requires_grad=False)
       max_len = 512
       self.pos_embedding = nn.Embedding(max_len, self.embedding_dim)
       configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, 
