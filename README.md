@@ -18,12 +18,12 @@
 1) We reimplemented the **original article:** [code2vec by U. Alon et al](https://arxiv.org/pdf/1803.09473.pdf).
 2) We improved _F1-score_ on the test dataset of java14m-data [here you can find dataset](https://github.com/tech-srl/code2vec#additional-datasets).
 
-|    Best F1-scores:   |Our implementation| U. Alon work| 
-| ---------------|:-----------:| :-----------:| 
-| **Batch size 128 Test**|    0.17671   |  0.1752|  
-| **Batch size 128 Validation**| 0.20213| -|  
-| **Batch size 1024 Test**| 0.16372     |  -|
-| **Batch size 1024 Validation**| 0.1887| -| 
+|    Best F1-scores:   |Our implementation| U. Alon work| With BERT| 
+| ---------------|:-----------:| :-----------:| :-----------:| 
+| **Batch size 128 Test**|    0.17671   |  0.1752|  0.1689|  
+| **Batch size 128 Validation**| 0.20213| -|  0.17341| 
+| **Batch size 1024 Test**| 0.16372     |  -| -|
+| **Batch size 1024 Validation**| 0.1887| -|  -| 
 3) __Also, we applied Bert architecture instead of attention layer in the original article.__ Results you can see below:
 
 ## If you want to run our code
