@@ -79,7 +79,6 @@ class code2vec_model(nn.Module):
     ## 3. Attention mechanism
     mask = (starts > 1).float() ## if 1 then it is pad and we don't pay attention to it
     ## 4. DropOut + Fully-connected layer into 'Combinied context vectors'
-    context_vec = self.DropOut(context_vec)
     comb_context_vec = torch.tanh(self.linear(context_vec))
     
     if self.bert:
@@ -92,7 +91,7 @@ class code2vec_model(nn.Module):
       context_vec = self.DropOut(sum_embeds)
       _, code_vector = self.bert(attention_mask=mask, inputs_embeds=context_vec)
     else:
-
+      comb_context_vec = self.DropOut(comb_context_vec)
       lin_mul = torch.matmul(comb_context_vec, self.a.T)
       attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
       code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
