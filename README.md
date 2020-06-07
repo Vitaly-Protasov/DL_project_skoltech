@@ -17,7 +17,7 @@
 ## What we have done
 1) We reimplemented the **original article:** [code2vec by U. Alon et al](https://arxiv.org/pdf/1803.09473.pdf).
 2) We improved _F1-score_ on the test dataset of java14m-data [here you can find dataset](https://github.com/tech-srl/code2vec#additional-datasets).
-3) Weight of two models you can find [here](https://drive.google.com/drive/folders/1Q5ixv8dQ_qYqHg6w4Ep_XNeCJYZE6Cl2?usp=sharing)
+3) Weights of two models you can find [here](https://drive.google.com/drive/folders/1Q5ixv8dQ_qYqHg6w4Ep_XNeCJYZE6Cl2?usp=sharing)
 
 |    Best F1-scores:   |Our implementation| U. Alon work| With BERT| 
 | ---------------|:-----------:| :-----------:| :-----------:| 
