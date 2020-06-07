@@ -52,11 +52,12 @@ class code2vec_model(nn.Module):
                                  hidden_dropout_prob=dropout_rate, attention_probs_dropout_prob=dropout_rate)
                                  
       self.bert = BertModel(configuration)
+      self.output_linear = nn.Linear(hidden_size, self.labels_num, bias = False)
     else:
       self.a = nn.Parameter(torch.randn(1, self.embedding_dim))
-    
-    ## 4. Prediction
-    self.output_linear = nn.Linear(self.embedding_dim, self.labels_num, bias = False)
+      ## 4. Prediction
+      self.output_linear = nn.Linear(self.embedding_dim, self.labels_num, bias = False)
+
     self.neg_INF = - 2 * 10**10
 
   def forward(self, starts, paths, ends):
@@ -79,6 +80,7 @@ class code2vec_model(nn.Module):
     
     if self.bert:
       _, code_vector = self.bert(attention_mask=mask, inputs_embeds=context_vec)
+      output = self.output_linear(code_vector)
     else:
       ## 4. DropOut + Fully-connected layer into 'Combinied context vectors'
       context_vec = self.DropOut(context_vec)
@@ -86,7 +88,7 @@ class code2vec_model(nn.Module):
       lin_mul = torch.matmul(comb_context_vec, self.a.T)
       attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
       code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
-
-    ## 5. Prediction
-    output = self.output_linear(code_vector)
+      ## 5. Prediction
+      output = self.output_linear(code_vector)
+    
     return code_vector, output
