@@ -27,7 +27,7 @@
 | **Batch size 1024 Validation**| 0.1887| -|  -| 
 3) __Also, we applied Bert architecture instead of attention layer in the original article.__ Results you can see below:
 
-## If you want to run our code
+## If you want to run our code for training
 1) First of all, you can open ipython notebook in colab via the button above. Just run all cells, it's easy to do. 
 2) Without notebook in the console:
 
