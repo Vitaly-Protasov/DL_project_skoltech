@@ -45,8 +45,9 @@ class code2vec_model(nn.Module):
       num_attention_heads = bert_params['num_attention_heads']
       num_transformer_layers = bert_params['num_transformer_layers']
       intermediate_size = bert_params['intermediate_size']
+      hidden_size = self.path_embedding_dim + 2 * self.val_embedding_dim
       configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, 
-                                 hidden_size=self.embedding_dim, num_attention_heads=num_attention_heads, 
+                                 hidden_size=hidden_size, num_attention_heads=num_attention_heads, 
                                  num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size, 
                                  hidden_dropout_prob=dropout_rate, attention_probs_dropout_prob=dropout_rate)
                                  
@@ -72,17 +73,16 @@ class code2vec_model(nn.Module):
 
     ## 2. Concatecation of 3 vectors 
     context_vec = torch.cat((start_embedding, path_embedding, end_embedding), dim=2)
-
-    ## 3. DropOut + Fully-connected layer into 'Combinied context vectors'
-    context_vec = self.DropOut(context_vec)
-    comb_context_vec = torch.tanh(self.linear(context_vec)) 
-
-    ## 4. Attention mechanism
+    
+    ## 3. Attention mechanism
     mask = (starts > 1).float() ## if 1 then it is pad and we don't pay attention to it
     
     if self.bert:
-      _, code_vector = self.bert(attention_mask=mask, inputs_embeds=comb_context_vec)
+      _, code_vector = self.bert(attention_mask=mask, inputs_embeds=context_vec)
     else:
+      ## 4. DropOut + Fully-connected layer into 'Combinied context vectors'
+      context_vec = self.DropOut(context_vec)
+      comb_context_vec = torch.tanh(self.linear(context_vec)) 
       lin_mul = torch.matmul(comb_context_vec, self.a.T)
       attention_weights = F.softmax(torch.mul(lin_mul, mask.view(lin_mul.size())) + (1 - mask.view(lin_mul.size())) * self.neg_INF, dim = 1)
       code_vector = torch.sum(torch.mul(comb_context_vec, attention_weights), dim = 1)
