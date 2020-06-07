@@ -85,6 +85,7 @@ class code2vec_model(nn.Module):
     if self.bert:
       bs, seq_len = comb_context_vec.shape[:2]
       token_embeds = self.scale * comb_context_vec
+      device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
       positions = torch.arange(seq_len).to(device).repeat(bs).view(bs, seq_len)
       pos_embeds = self.pos_embedding(positions)
       sum_embeds = torch.add(token_embeds, pos_embeds)
