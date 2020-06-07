@@ -48,7 +48,7 @@ class code2vec_model(nn.Module):
       hidden_size = self.path_embedding_dim + 2 * self.val_embedding_dim
       self.scale = torch.nn.Parameter(torch.sqrt(torch.tensor(hidden_size, dtype=torch.float32)), requires_grad=False)
       max_len = 512
-      self.pos_embedding = nn.Embedding(max_len, hid_dim)
+      self.pos_embedding = nn.Embedding(max_len, hidden_size)
       configuration = BertConfig(type_vocab_size=1, vocab_size=self.labels_num, 
                                  hidden_size=hidden_size, num_attention_heads=num_attention_heads, 
                                  num_hidden_layers=num_transformer_layers, intermediate_size=intermediate_size, 
